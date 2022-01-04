@@ -44,7 +44,7 @@ public class TopicosController {
 	@GetMapping
 	public Page<TopicoDto> lista(
 			@RequestParam(required = false) String nomeCurso,
-			@PageableDefault(sort = "id", direction = Direction.DESC) Pageable paginacao
+			@PageableDefault(sort = "id", direction = Direction.DESC, page = 0, size = 10) Pageable paginacao
 			) {
 		
 		Page<Topico> topicos;
