@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.forum.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @Service
@@ -30,6 +31,20 @@ public class TokenService {
 				.setExpiration(expirationDate)
 				.signWith(io.jsonwebtoken.SignatureAlgorithm.HS256, secret)
 				.compact();
+	}
+
+	public boolean isValid(String token) {
+		try {
+			Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Long getUserId(String token) {
+		Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		return Long.parseLong(body.getSubject());
 	}
 
 }
